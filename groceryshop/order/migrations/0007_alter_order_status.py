@@ -13,6 +13,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='order',
             name='status',
-            field=models.CharField(choices=[('F', 'Fulfilled'), ('U', 'Unfulfilled'), ('C', 'Canceled'), ('R', 'Refunded')], default='F'),
+            field=models.CharField(max_length=20, choices=[('F', 'Fulfilled'), ('U', 'Unfulfilled'), ('C', 'Canceled'), ('R', 'Refunded')], default='F'),
         ),
     ]
