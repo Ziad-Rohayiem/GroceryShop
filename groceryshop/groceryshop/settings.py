@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "3=k^ljfb%$ocy85a@d(#q5tm3nb2j1%y+20xbq=w@+jn0p*s7h")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
+DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "*").split(" ") if os.environ.get("ALLOWED_HOSTS") else ["*"]
 
 
 # Application definition
@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'checkout',
     'order',
     'django_extensions',
-    'coupons'
+    'coupons',
 ]
 
 SITE_ID = 1
@@ -96,20 +96,16 @@ WSGI_APPLICATION = 'groceryshop.wsgi.application'
 
 
 
-# internal: postgres://mongy:zjSyNiNXcL5ouWE5TnWGr3Yyi2NYH0mB@dpg-cm3fr10cmk4c73ccmdug-a/main_db_iqe5
-# external: postgres://mongy:zjSyNiNXcL5ouWE5TnWGr3Yyi2NYH0mB@dpg-cm3fr10cmk4c73ccmdug-a.oregon-postgres.render.com/main_db_iqe5
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'main_db',
-        'USER': 'main_db_user',
-        'PASSWORD': '1234',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 database_url = os.environ.get("DATABASE_URL")
-DATABASES['default'] = dj_database_url.parse(database_url)
+if database_url:
+    DATABASES['default'] = dj_database_url.parse(database_url)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
